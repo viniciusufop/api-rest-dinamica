@@ -1,22 +1,25 @@
 package br.com.vfs.apirestdinamica.controller;
 
+import br.com.vfs.apirestdinamica.entity.ElementModel;
 import br.com.vfs.apirestdinamica.service.ModelServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 public class ApiController {
 
     private ModelServiceImpl modelService;
 
-    @GetMapping("/{model}")
+    @GetMapping(value = "/{model}", produces= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllElementsFromModel(@PathVariable(name = "model") final String model) {
-        modelService.getAllElementsForModel(model);
-        return ResponseEntity.ok().body(model);
+        List<ElementModel> elementModels = modelService.getAllElementsForModel(model);
+        return ResponseEntity.ok().body(elementModels);
     }
 
     @GetMapping("/{model}/{id}")
