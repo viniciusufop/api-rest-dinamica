@@ -1,5 +1,6 @@
 package br.com.vfs.apirestdinamica.service;
 
+import br.com.vfs.apirestdinamica.config.ErrorMessage;
 import br.com.vfs.apirestdinamica.entity.ElementModel;
 import br.com.vfs.apirestdinamica.exception.ModelException;
 import br.com.vfs.apirestdinamica.repository.ElementModelRepository;
@@ -14,9 +15,9 @@ public class ModelServiceImpl {
 
     private ModelRepository modelRepository;
     private ElementModelRepository elementModelRepository;
-
+    private ErrorMessage errorMessage;
     public List<ElementModel> getAllElementsForModel(String name) {
-        modelRepository.findById(name).orElseThrow(() -> new ModelException());
+        modelRepository.findById(name).orElseThrow(() -> new ModelException(errorMessage.getModelNotFound()));
         return elementModelRepository.findAllByModel(name);
     }
 
@@ -28,5 +29,9 @@ public class ModelServiceImpl {
     @Autowired
     public void setElementModelRepository(ElementModelRepository elementModelRepository) {
         this.elementModelRepository = elementModelRepository;
+    }
+    @Autowired
+    public void setErrorMessage(ErrorMessage errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }
