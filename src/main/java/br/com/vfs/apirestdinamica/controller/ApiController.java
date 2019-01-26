@@ -1,6 +1,7 @@
 package br.com.vfs.apirestdinamica.controller;
 
-import org.springframework.http.HttpStatus;
+import br.com.vfs.apirestdinamica.service.ModelServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +11,11 @@ import java.net.URISyntaxException;
 @RestController
 public class ApiController {
 
+    private ModelServiceImpl modelService;
+
     @GetMapping("/{model}")
     public ResponseEntity getAllElementsFromModel(@PathVariable(name = "model") final String model) {
-
+        modelService.getAllElementsForModel(model);
         return ResponseEntity.ok().body(model);
     }
 
@@ -39,5 +42,10 @@ public class ApiController {
     public ResponseEntity removeElementFromModelByID(@PathVariable(name = "model") final String model,
                                                      @PathVariable(name = "id") final Integer id) {
         return ResponseEntity.ok().body(model + " " + id.toString());
+    }
+
+    @Autowired
+    public void setModelService(ModelServiceImpl modelService) {
+        this.modelService = modelService;
     }
 }
