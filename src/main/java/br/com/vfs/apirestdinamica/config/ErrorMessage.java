@@ -9,7 +9,14 @@ public class ErrorMessage {
     @Value("${model.not.found}")
     private String modelNotFound;
 
+    @Value("${element.not.found}")
+    private String elementNotFound;
+
     public String getModelNotFound() {
         return modelNotFound;
+    }
+
+    public String getElementNotFound() {
+        return elementNotFound;
     }
 }

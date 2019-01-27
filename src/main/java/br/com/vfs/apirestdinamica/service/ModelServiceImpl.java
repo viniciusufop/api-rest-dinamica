@@ -17,8 +17,17 @@ public class ModelServiceImpl {
     private ElementModelRepository elementModelRepository;
     private ErrorMessage errorMessage;
     public List<ElementModel> getAllElementsForModel(String name) {
-        modelRepository.findById(name).orElseThrow(() -> new ModelException(errorMessage.getModelNotFound()));
+        isModelValid(name);
         return elementModelRepository.findAllByModel(name);
+    }
+
+    public ElementModel getElementForModelByID(String name, Long id) {
+        isModelValid(name);
+        return elementModelRepository.findByIdAndModel(id, name).orElseThrow(() -> new ModelException((errorMessage.getElementNotFound())));
+    }
+
+    private void isModelValid(String model) {
+        modelRepository.findById(model).orElseThrow(() -> new ModelException(errorMessage.getModelNotFound()));
     }
 
     @Autowired

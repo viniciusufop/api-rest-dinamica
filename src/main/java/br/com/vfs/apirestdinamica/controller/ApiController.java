@@ -24,8 +24,9 @@ public class ApiController {
 
     @GetMapping("/{model}/{id}")
     public ResponseEntity getElementFromModelById(@PathVariable(name = "model") final String model,
-                                                  @PathVariable(name = "id") final Integer id) {
-        return ResponseEntity.ok().body(model + " " + id.toString());
+                                                  @PathVariable(name = "id") final Long id) {
+        ElementModel elementModel = modelService.getElementForModelByID(model, id);
+        return ResponseEntity.ok().body(elementModel);
     }
 
     @PostMapping("/{model}")
