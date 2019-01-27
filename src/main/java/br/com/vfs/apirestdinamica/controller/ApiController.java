@@ -18,14 +18,14 @@ public class ApiController {
 
     @GetMapping(value = "/{model}", produces= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllElementsFromModel(@PathVariable(name = "model") final String model) {
-        List<ElementModel> elementModels = modelService.getAllElementsForModel(model);
+        List<ElementModel> elementModels = modelService.getAllElementsFromModel(model);
         return ResponseEntity.ok().body(elementModels);
     }
 
     @GetMapping("/{model}/{id}")
     public ResponseEntity getElementFromModelById(@PathVariable(name = "model") final String model,
                                                   @PathVariable(name = "id") final Long id) {
-        ElementModel elementModel = modelService.getElementForModelByID(model, id);
+        ElementModel elementModel = modelService.getElementFromModelByID(model, id);
         return ResponseEntity.ok().body(elementModel);
     }
 
@@ -37,15 +37,16 @@ public class ApiController {
 
     @PutMapping("/{model}/{id}")
     public ResponseEntity alterElementFromModelByID(@PathVariable(name = "model") final String model,
-                                                    @PathVariable(name = "id") final Integer id,
+                                                    @PathVariable(name = "id") final Long id,
                                                     @RequestBody final String structElement) throws URISyntaxException {
         return ResponseEntity.created(new URI("12")).body(model + " " + structElement);
     }
 
     @DeleteMapping("/{model}/{id}")
     public ResponseEntity removeElementFromModelByID(@PathVariable(name = "model") final String model,
-                                                     @PathVariable(name = "id") final Integer id) {
-        return ResponseEntity.ok().body(model + " " + id.toString());
+                                                     @PathVariable(name = "id") final Long id) {
+        modelService.removeElementFromModelByID(model, id);
+        return ResponseEntity.ok().build();
     }
 
     @Autowired

@@ -16,18 +16,27 @@ public class ModelServiceImpl {
     private ModelRepository modelRepository;
     private ElementModelRepository elementModelRepository;
     private ErrorMessage errorMessage;
-    public List<ElementModel> getAllElementsForModel(String name) {
+    public List<ElementModel> getAllElementsFromModel(String name) {
         isModelValid(name);
         return elementModelRepository.findAllByModel(name);
     }
 
-    public ElementModel getElementForModelByID(String name, Long id) {
+    public ElementModel getElementFromModelByID(String name, Long id) {
         isModelValid(name);
-        return elementModelRepository.findByIdAndModel(id, name).orElseThrow(() -> new ModelException((errorMessage.getElementNotFound())));
+        return getElement(name, id);
+    }
+
+    public void removeElementFromModelByID(String name, Long id) {
+        isModelValid(name);
+        elementModelRepository.delete(getElement(name, id));
     }
 
     private void isModelValid(String model) {
         modelRepository.findById(model).orElseThrow(() -> new ModelException(errorMessage.getModelNotFound()));
+    }
+
+    private ElementModel getElement(String name, Long id) {
+        return elementModelRepository.findByIdAndModel(id, name).orElseThrow(() -> new ModelException((errorMessage.getElementNotFound())));
     }
 
     @Autowired
@@ -43,4 +52,5 @@ public class ModelServiceImpl {
     public void setErrorMessage(ErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
+
 }
