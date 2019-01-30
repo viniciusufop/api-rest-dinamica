@@ -63,13 +63,13 @@ public class ApiRestDinamicaApplication implements CommandLineRunner {
                         new Field("possui piscina", FieldType.NUMERIC)));
         modelRepository.save(model);
 
-        ElementModel casaPraia = new ElementModel(3l,"house", //
+        ElementModel casaPraia = new ElementModel(1l,"house", //
                 Arrays.asList( //
                         new Field("cor", "amarela", FieldType.STRING), //
                         new Field("quantidade quartos", "2", FieldType.NUMERIC), //
                         new Field("possui piscina", "true", FieldType.NUMERIC)));
         elementModelRepository.save(casaPraia);
-        ElementModel casaUberlandia = new ElementModel(4l,"house", //
+        ElementModel casaUberlandia = new ElementModel(2l,"house", //
                 Arrays.asList( //
                         new Field("cor", "branca", FieldType.STRING), //
                         new Field("quantidade quartos", "3", FieldType.NUMERIC), //

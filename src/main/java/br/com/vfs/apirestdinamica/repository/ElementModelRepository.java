@@ -11,4 +11,6 @@ public interface ElementModelRepository extends MongoRepository<ElementModel, Lo
     List<ElementModel> findAllByModel(String model);
 
     Optional<ElementModel> findByIdAndModel(Long id, String model);
+
+    Optional<ElementModel> findTopByModelOrderByIdDesc(String model);
 }

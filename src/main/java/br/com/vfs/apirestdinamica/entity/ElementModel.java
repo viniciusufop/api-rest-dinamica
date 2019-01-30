@@ -9,14 +9,27 @@ import java.util.List;
 public class ElementModel implements Serializable {
 
     @Id
+    private String elementModelId;
     private Long id;
     private String model;
     private List<Field> fields;
 
+    public ElementModel() {
+    }
+
     public ElementModel(Long id, String model, List<Field> fields) {
-        this.id = id;
         this.model = model;
         this.fields = fields;
+        this.id = id;
+        this.elementModelId = String.format("%s-%d", model, id);
+    }
+
+    public String getElementModelId() {
+        return elementModelId;
+    }
+
+    public void setElementModelId(String elementModelId) {
+        this.elementModelId = elementModelId;
     }
 
     public Long getId() {

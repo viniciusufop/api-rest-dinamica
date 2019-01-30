@@ -1,7 +1,9 @@
 package br.com.vfs.apirestdinamica.service;
 
 import br.com.vfs.apirestdinamica.config.ErrorMessage;
+import br.com.vfs.apirestdinamica.dto.Field;
 import br.com.vfs.apirestdinamica.entity.ElementModel;
+import br.com.vfs.apirestdinamica.entity.Model;
 import br.com.vfs.apirestdinamica.exception.ModelException;
 import br.com.vfs.apirestdinamica.repository.ElementModelRepository;
 import br.com.vfs.apirestdinamica.repository.ModelRepository;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ModelServiceImpl {
@@ -31,8 +34,8 @@ public class ModelServiceImpl {
         elementModelRepository.delete(getElement(name, id));
     }
 
-    private void isModelValid(String model) {
-        modelRepository.findById(model).orElseThrow(() -> new ModelException(errorMessage.getModelNotFound()));
+    private Model isModelValid(String model) {
+        return modelRepository.findById(model).orElseThrow(() -> new ModelException(errorMessage.getModelNotFound()));
     }
 
     private ElementModel getElement(String name, Long id) {
@@ -53,4 +56,15 @@ public class ModelServiceImpl {
         this.errorMessage = errorMessage;
     }
 
+    public ElementModel createElementFromModelByID(String name, String structElement) {
+        Model model = isModelValid(name);
+        List<Field> fields = model.returnFields(structElement);
+
+        Long id = 0l;
+        Optional<ElementModel> elementModel = elementModelRepository.findTopByModelOrderByIdDesc(name);
+        if(elementModel.isPresent()){
+            id = elementModel.get().getId();
+        }
+        return elementModelRepository.save(new ElementModel(++id, name, fields));
+    }
 }

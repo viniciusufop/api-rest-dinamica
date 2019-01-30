@@ -32,7 +32,8 @@ public class ApiController {
     @PostMapping("/{model}")
     public ResponseEntity createNewElementFromModel(@PathVariable(name = "model") final String model,
                                                     @RequestBody final String structElement) throws URISyntaxException {
-        return ResponseEntity.created(new URI("12")).body(model + " " + structElement);
+        ElementModel elementModel = modelService.createElementFromModelByID(model, structElement);
+        return ResponseEntity.created(new URI(String.format("/%s/%d", model, elementModel.getId()))).body(elementModel);
     }
 
     @PutMapping("/{model}/{id}")
