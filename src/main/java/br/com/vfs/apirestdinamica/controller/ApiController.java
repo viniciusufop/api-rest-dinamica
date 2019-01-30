@@ -40,7 +40,8 @@ public class ApiController {
     public ResponseEntity alterElementFromModelByID(@PathVariable(name = "model") final String model,
                                                     @PathVariable(name = "id") final Long id,
                                                     @RequestBody final String structElement) throws URISyntaxException {
-        return ResponseEntity.created(new URI("12")).body(model + " " + structElement);
+        ElementModel elementModel = modelService.alterElementFromModelByID(model, id, structElement);
+        return ResponseEntity.ok(elementModel);
     }
 
     @DeleteMapping("/{model}/{id}")

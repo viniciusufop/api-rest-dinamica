@@ -57,14 +57,25 @@ public class ModelServiceImpl {
     }
 
     public ElementModel createElementFromModelByID(String name, String structElement) {
-        Model model = isModelValid(name);
-        List<Field> fields = model.returnFields(structElement);
-
+        List<Field> fields = getFields(name, structElement);
         Long id = 0l;
         Optional<ElementModel> elementModel = elementModelRepository.findTopByModelOrderByIdDesc(name);
         if(elementModel.isPresent()){
             id = elementModel.get().getId();
         }
         return elementModelRepository.save(new ElementModel(++id, name, fields));
+    }
+
+    public ElementModel alterElementFromModelByID(String name, Long id, String structElement) {
+        List<Field> fields = getFields(name, structElement);
+        ElementModel elementModel = getElement(name, id);
+        elementModel.setFields(fields);
+        elementModelRepository.save(elementModel);
+        return elementModel;
+    }
+
+    private List<Field> getFields(String name, String structElement) {
+        Model model = isModelValid(name);
+        return model.returnFields(structElement);
     }
 }
