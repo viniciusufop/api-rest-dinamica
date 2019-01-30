@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class ApiController {
 
     private ModelServiceImpl modelService;
