@@ -7,11 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.annotation.Id;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Model {
+public class Model implements Serializable {
 
     @Id
     private String name;
@@ -22,6 +23,22 @@ public class Model {
 
     public Model(String name, List<Field> fields) {
         this.name = name;
+        this.fields = fields;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Field> getFields() {
+        return fields;
+    }
+
+    public void setFields(List<Field> fields) {
         this.fields = fields;
     }
 

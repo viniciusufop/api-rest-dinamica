@@ -17,30 +17,12 @@ import java.util.Optional;
 public class ModelServiceImpl {
 
     private ModelRepository modelRepository;
-    private ElementModelRepository elementModelRepository;
     private ErrorMessage errorMessage;
-    public List<ElementModel> getAllElementsFromModel(String name) {
-        isModelValid(name);
-        return elementModelRepository.findAllByModel(name);
-    }
 
-    public ElementModel getElementFromModelByID(String name, Long id) {
-        isModelValid(name);
-        return getElement(name, id);
-    }
-
-    public void removeElementFromModelByID(String name, Long id) {
-        isModelValid(name);
-        elementModelRepository.delete(getElement(name, id));
-    }
-
-    private Model isModelValid(String model) {
+    public Model isModelValid(String model) {
         return modelRepository.findById(model).orElseThrow(() -> new ModelException(errorMessage.getModelNotFound()));
     }
 
-    private ElementModel getElement(String name, Long id) {
-        return elementModelRepository.findByIdAndModel(id, name).orElseThrow(() -> new ModelException((errorMessage.getElementNotFound())));
-    }
 
     @Autowired
     public void setModelRepository(ModelRepository modelRepository) {
@@ -48,34 +30,15 @@ public class ModelServiceImpl {
     }
 
     @Autowired
-    public void setElementModelRepository(ElementModelRepository elementModelRepository) {
-        this.elementModelRepository = elementModelRepository;
-    }
-    @Autowired
     public void setErrorMessage(ErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 
-    public ElementModel createElementFromModelByID(String name, String structElement) {
-        List<Field> fields = getFields(name, structElement);
-        Long id = 0l;
-        Optional<ElementModel> elementModel = elementModelRepository.findTopByModelOrderByIdDesc(name);
-        if(elementModel.isPresent()){
-            id = elementModel.get().getId();
-        }
-        return elementModelRepository.save(new ElementModel(++id, name, fields));
+    public List<Model> getAllModels() {
+        return modelRepository.findAll();
     }
 
-    public ElementModel alterElementFromModelByID(String name, Long id, String structElement) {
-        List<Field> fields = getFields(name, structElement);
-        ElementModel elementModel = getElement(name, id);
-        elementModel.setFields(fields);
-        elementModelRepository.save(elementModel);
-        return elementModel;
-    }
-
-    private List<Field> getFields(String name, String structElement) {
-        Model model = isModelValid(name);
-        return model.returnFields(structElement);
+    public Model getModelByName(String name) {
+        return isModelValid(name);
     }
 }
